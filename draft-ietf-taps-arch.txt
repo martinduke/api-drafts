@@ -5,7 +5,7 @@
 TAPS Working Group                                         T. Pauly, Ed.
 Internet-Draft                                                Apple Inc.
 Intended status: Standards Track                        B. Trammell, Ed.
-Expires: 28 January 2021                         Google Switzerland GmbH
+Expires: 15 July 2021                            Google Switzerland GmbH
                                                             A. Brunstrom
                                                      Karlstad University
                                                             G. Fairhurst
@@ -16,11 +16,11 @@ Expires: 28 January 2021                         Google Switzerland GmbH
                                                                TU Berlin
                                                                C.A. Wood
                                                               Cloudflare
-                                                            27 July 2020
+                                                         11 January 2021
 
 
                  An Architecture for Transport Services
-                      draft-ietf-taps-arch-latest
+                          draft-ietf-taps-arch
 
 Abstract
 
@@ -50,19 +50,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-
-
-
-Pauly, et al.            Expires 28 January 2021                [Page 1]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
-   This Internet-Draft will expire on 28 January 2021.
+   This Internet-Draft will expire on 15 July 2021.
 
 Copyright Notice
 
-   Copyright (c) 2020 IETF Trust and the persons identified as the
+   Copyright (c) 2021 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -76,47 +68,40 @@ Copyright Notice
 
 Table of Contents
 
-   1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-     1.1.  Background  . . . . . . . . . . . . . . . . . . . . . . .   4
-     1.2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . .   4
-     1.3.  Specification of Requirements . . . . . . . . . . . . . .   5
-   2.  API Model . . . . . . . . . . . . . . . . . . . . . . . . . .   5
-     2.1.  Event-Driven API  . . . . . . . . . . . . . . . . . . . .   7
-     2.2.  Data Transfer Using Messages  . . . . . . . . . . . . . .   7
-     2.3.  Flexibile Implementation  . . . . . . . . . . . . . . . .   8
-   3.  API and Implementation Requirements . . . . . . . . . . . . .   9
-     3.1.  Provide Common APIs for Common Features . . . . . . . . .   9
-     3.2.  Allow Access to Specialized Features  . . . . . . . . . .  10
-     3.3.  Select Equivalent Protocol Stacks . . . . . . . . . . . .  11
-     3.4.  Maintain Interoperability . . . . . . . . . . . . . . . .  12
-   4.  Transport Services Architecture and Concepts  . . . . . . . .  12
-     4.1.  Transport Services API Concepts . . . . . . . . . . . . .  13
-       4.1.1.  Connections and Related Objects . . . . . . . . . . .  15
-       4.1.2.  Pre-Establishment . . . . . . . . . . . . . . . . . .  16
-       4.1.3.  Establishment Actions . . . . . . . . . . . . . . . .  17
-       4.1.4.  Data Transfer Objects and Actions . . . . . . . . . .  18
-       4.1.5.  Event Handling  . . . . . . . . . . . . . . . . . . .  19
-       4.1.6.  Termination Actions . . . . . . . . . . . . . . . . .  20
-       4.1.7.  Connection Groups . . . . . . . . . . . . . . . . . .  20
-     4.2.  Transport Services Implementation Concepts  . . . . . . .  20
-       4.2.1.  Candidate Gathering . . . . . . . . . . . . . . . . .  21
-       4.2.2.  Candidate Racing  . . . . . . . . . . . . . . . . . .  22
-       4.2.3.  Separating Connection Groups  . . . . . . . . . . . .  22
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  23
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
-   7.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  24
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  24
-
-
-
-Pauly, et al.            Expires 28 January 2021                [Page 2]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  24
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  25
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  26
+   1.  Introduction
+     1.1.  Background
+     1.2.  Overview
+     1.3.  Specification of Requirements
+   2.  API Model
+     2.1.  Event-Driven API
+     2.2.  Data Transfer Using Messages
+     2.3.  Flexibile Implementation
+   3.  API and Implementation Requirements
+     3.1.  Provide Common APIs for Common Features
+     3.2.  Allow Access to Specialized Features
+     3.3.  Select Equivalent Protocol Stacks
+     3.4.  Maintain Interoperability
+   4.  Transport Services Architecture and Concepts
+     4.1.  Transport Services API Concepts
+       4.1.1.  Endpoint Objects
+       4.1.2.  Connections and Related Objects
+       4.1.3.  Pre-Establishment
+       4.1.4.  Establishment Actions
+       4.1.5.  Data Transfer Objects and Actions
+       4.1.6.  Event Handling
+       4.1.7.  Termination Actions
+       4.1.8.  Connection Groups
+     4.2.  Transport Services Implementation Concepts
+       4.2.1.  Candidate Gathering
+       4.2.2.  Candidate Racing
+       4.2.3.  Separating Connection Groups
+   5.  IANA Considerations
+   6.  Security Considerations
+   7.  Acknowledgements
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
+   Authors' Addresses
 
 1.  Introduction
 
@@ -156,40 +141,26 @@ Internet-Draft              TAPS Architecture                  July 2020
    represented in a consistent fashion will enable applications to be
    easily ported from one system to another.
 
-
-
-
-
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021                [Page 3]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
 1.1.  Background
 
    The Transport Services architecture is based on the survey of
    services provided by IETF transport protocols and congestion control
    mechanisms [RFC8095], and the distilled minimal set of the features
-   offered by transport protocols [I-D.ietf-taps-minset].  These
-   documents identified common features and patterns across all
-   transport protocols developed thus far in the IETF.
+   offered by transport protocols [RFC8923].  These documents identified
+   common features and patterns across all transport protocols developed
+   thus far in the IETF.
 
    Since transport security is an increasingly relevant aspect of using
    transport protocols on the Internet, this architecture also considers
    the impact of transport security protocols on the feature-set exposed
-   by Transport Services [I-D.ietf-taps-transport-security].
+   by Transport Services [RFC8922].
 
    One of the key insights to come from identifying the minimal set of
-   features provided by transport protocols [I-D.ietf-taps-minset] was
-   that features either require application interaction and guidance
-   (referred to in that document as Functional or Optimizing Features),
-   or else can be handled automatically by a system implementing
-   Transport Services (referred to as Automatable Features).  Among the
+   features provided by transport protocols [RFC8923] was that features
+   either require application interaction and guidance (referred to in
+   that document as Functional or Optimizing Features), or else can be
+   handled automatically by a system implementing Transport Services
+   (referred to as Automatable Features).  Among the identified
    Functional and Optimizing Features, some were common across all or
    nearly all transport protocols, while others could be seen as
    features that, if specified, would only be useful with a subset of
@@ -216,15 +187,6 @@ Internet-Draft              TAPS Architecture                  July 2020
       Services API.  These principles are intended to make sure that
       transport protocols can continue to be enhanced and evolve without
       requiring significant changes by application developers.
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021                [Page 4]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
 
    *  Section 4 presents the Transport Services architecture diagram and
       defines the concepts that are used by both the API and
@@ -275,13 +237,6 @@ Internet-Draft              TAPS Architecture                  July 2020
    |               Network Layer Interface               |
    +-----------------------------------------------------+
 
-
-
-Pauly, et al.            Expires 28 January 2021                [Page 5]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
                          Figure 1: Socket API Model
 
    The Transport Services architecture evolves this general model of
@@ -325,19 +280,6 @@ Internet-Draft              TAPS Architecture                  July 2020
    implementations can use multiple IP addresses, multiple protocols,
    multiple paths, and provide multiple application streams.
 
-
-
-
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021                [Page 6]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
 2.1.  Event-Driven API
 
    Originally, sockets presented a blocking interface for establishing
@@ -350,7 +292,7 @@ Internet-Draft              TAPS Architecture                  July 2020
 
    In contrast to sockets, all interaction with a Transport Services
    system is expected to be asynchronous, and use an event-driven model
-   (see Section 4.1.5).  For example, if the application wants to read,
+   (see Section 4.1.6).  For example, if the application wants to read,
    its call to read will not complete immediately, but will deliver an
    event containing the received data once it is available.  Error
    handling is also asynchronous; a failure to send results in an
@@ -385,15 +327,6 @@ Internet-Draft              TAPS Architecture                  July 2020
    more closely matches the way applications use the network.  Providing
    a message-based abstraction provides many benefits, such as:
 
-
-
-
-
-Pauly, et al.            Expires 28 January 2021                [Page 7]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
    *  the ability to associate deadlines with messages, for applications
       that care about timing;
 
@@ -412,12 +345,12 @@ Internet-Draft              TAPS Architecture                  July 2020
       pooled connections.
 
    Allowing applications to interact with messages is backwards-
-   compatible with existings protocols and APIs, as it does not change
-   the wire format of any protocol.  Instead, it gives the protocol
-   stack additional information to allow it to make better use of modern
-   transport services, while simplifying the application's role in
-   parsing data.  For protocols which natively use a streaming
-   abstraction, framers (Section 4.1.4) bridge the gap between the two
+   compatible with existing protocols and APIs because it does not
+   change the wire format of any protocol.  Instead, it gives the
+   protocol stack additional information to allow it to make better use
+   of modern transport services, while simplifying the application's
+   role in parsing data.  For protocols which natively use a streaming
+   abstraction, framers (Section 4.1.5) bridge the gap between the two
    abstractions.
 
 2.3.  Flexibile Implementation
@@ -439,16 +372,6 @@ Internet-Draft              TAPS Architecture                  July 2020
    selection, and racing.  Transport services implementations can
    further implement fallback mechanisms if connection establishment of
    one protocol fails or performance is detected to be unsatisfactory.
-
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021                [Page 8]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
 
    Flexibility after connection establishment is also important.
    Transport protocols that can migrate between multiple network-layer
@@ -477,9 +400,9 @@ Internet-Draft              TAPS Architecture                  July 2020
    applications for adoption.
 
    The normative requirements described here allow Transport Services
-   APIs and Implementations to provide this functionlity without causing
-   incompatibility or introducing security vulnerabilities.  The rest of
-   this document describes the architecture non-normatively.
+   APIs and Implementations to provide this functionality without
+   causing incompatibility or introducing security vulnerabilities.  The
+   rest of this document describes the architecture non-normatively.
 
 3.1.  Provide Common APIs for Common Features
 
@@ -487,35 +410,18 @@ Internet-Draft              TAPS Architecture                  July 2020
    SHOULD be made accessible through a unified set of Transport Services
    API calls.  As a baseline, any Transport Services API MUST allow
    access to the minimal set of features offered by transport protocols
-   [I-D.ietf-taps-minset].
-
-
-
-
-
-
-
-
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021                [Page 9]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
+   [RFC8923].
 
    An application can specify constraints and preferences for the
    protocols, features, and network interfaces it will use via
    Properties.  A Transport Services API SHOULD offer Properties that
-   are common to multiple transport protocols, in order to enable the
-   system to appropriately select between protocols that offer
-   equivalent features.  Similarly, a Transport Services API SHOULD
-   offer Properties that are applicable to a variety of network layer
-   interfaces and paths, in order to permit racing of different network
-   paths without affecting the applications using the system.  Each
-   Property is expected to have a default value.
+   are common to multiple transport protocols, which enables the system
+   to appropriately select between protocols that offer equivalent
+   features.  Similarly, a Transport Services API SHOULD offer
+   Properties that are applicable to a variety of network layer
+   interfaces and paths, which permits racing of different network paths
+   without affecting the applications using the system.  Each Property
+   is expected to have a default value.
 
    The default values for Properties SHOULD be selected to ensure
    correctness for the widest set of applications, while providing the
@@ -554,14 +460,6 @@ Internet-Draft              TAPS Architecture                  July 2020
    application and thus constrain the set of protocols that can be used.
    For example, if an application requires support for automatic
    handover or failover for a connection, only protocol stacks that
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 10]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
    provide this feature are eligible to be used, e.g., protocol stacks
    that include a multipath protocol or a protocol that supports
    connection migration.  A Transport Services API needs to allow
@@ -606,23 +504,14 @@ Internet-Draft              TAPS Architecture                  July 2020
 
    To ensure that security protocols are not incorrectly swapped,
    Transport Services systems MUST only select Protocol Stacks that meet
-   application requirements ([I-D.ietf-taps-transport-security]).
-   Systems SHOULD only race Protocol Stacks where the transport security
-   protocols within the stacks are identical.  Transport Services
-   systems MUST NOT automatically fall back from secure protocols to
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 11]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
-   insecure protocols, or to weaker versions of secure protocols.  A
-   Transport Services system MAY allow applications to explicitly
-   specify that fallback to a specific other version of a protocol is
-   allowed, e.g., to allow fallback to TLS 1.2 if TLS 1.3 is not
-   available.
+   application requirements ([RFC8922]).  Systems SHOULD only race
+   Protocol Stacks where the transport security protocols within the
+   stacks are identical.  Transport Services systems MUST NOT
+   automatically fall back from secure protocols to insecure protocols,
+   or to weaker versions of secure protocols.  A Transport Services
+   system MAY allow applications to explicitly specify that fallback to
+   a specific other version of a protocol is allowed, e.g., to allow
+   fallback to TLS 1.2 if TLS 1.3 is not available.
 
 3.4.  Maintain Interoperability
 
@@ -665,15 +554,6 @@ Internet-Draft              TAPS Architecture                  July 2020
        internally used when building systems that implement Transport
        Services.
 
-
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 12]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
    The following diagram summarizes the top-level concepts in the
    architecture and how they relate to one another.
 
@@ -715,22 +595,14 @@ Internet-Draft              TAPS Architecture                  July 2020
 4.1.  Transport Services API Concepts
 
    Fundamentally, a Transport Services API needs to provide connection
-   objects (Section 4.1.1) that allow applications to establish
+   objects (Section 4.1.2) that allow applications to establish
    communication, and then send and receive data.  These could be
    exposed as handles or referenced objects, depending on the language.
 
    Beyond the connection objects, there are several high-level groups of
    actions that any Transport Services API needs to provide:
 
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 13]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
-   *  Pre-Establishment (Section 4.1.2) encompasses the properties that
+   *  Pre-Establishment (Section 4.1.3) encompasses the properties that
       an application can pass to describe its intent, requirements,
       prohibitions, and preferences for its networking operations.
       These properties apply to multiple transport protocols, unless
@@ -740,22 +612,22 @@ Internet-Draft              TAPS Architecture                  July 2020
       the expectations around data transfer, and they determine the set
       of events that will be supported.
 
-   *  Establishment (Section 4.1.3) focuses on the actions that an
+   *  Establishment (Section 4.1.4) focuses on the actions that an
       application takes on the connection objects to prepare for data
       transfer.
 
-   *  Data Transfer (Section 4.1.4) consists of how an application
+   *  Data Transfer (Section 4.1.5) consists of how an application
       represents the data to be sent and received, the functions
       required to send and receive that data, and how the application is
       notified of the status of its data transfer.
 
-   *  Event Handling (Section 4.1.5) defines categories of notifications
+   *  Event Handling (Section 4.1.6) defines categories of notifications
       which an application can receive during the lifetime of transport
       objects.  Events also provide opportunities for the application to
       interact with the underlying transport by querying state or
       updating maintenance options.
 
-   *  Termination (Section 4.1.6) focuses on the methods by which data
+   *  Termination (Section 4.1.7) focuses on the methods by which data
       transmission is stopped, and state is torn down in the transport.
 
    The diagram below provides a high-level view of the actions and
@@ -765,61 +637,60 @@ Internet-Draft              TAPS Architecture                  July 2020
    setting Connection and Message Properties in Pre-Establishment) or
    have been omitted for brevity and simplicity.
 
+     Pre-Establishment     :       Established             : Termination
+     -----------------     :       -----------             : -----------
+                           :                               :
+ +-- Local Endpoint        :           Message             :
+ +-- Remote Endpoint       :    Receive() |                :
+ +-- Transport Properties  :       Send() |                :
+ +-- Security Parameters   :              |                :
+ |                         :              |                :
+ |               InitiateWithSend()       |        Close() :
+ |   +---------------+   Initiate() +-----+------+ Abort() :
+ +---+ Preconnection |------------->| Connection |-----------> Closed
+     +---------------+ Rendezvous() +------------+         :
+    Listen() |             :           |     |             :
+             |             :           |     v             :
+             v             :           | Connection        :
+     +----------+          :           |   Ready           :
+     | Listener |----------------------+                   :
+     +----------+  Connection Received                     :
+                           :                               :
 
+            Figure 4: The lifetime of a Connection object
 
+4.1.1.  Endpoint Objects
 
+   *  Endpoint: An Endpoint represents an identifier for one side of a
+      transport connection.  Endpoints can be Local Endpoints or Remote
+      Endpoints, and respectively represent an identity that the
+      application uses for the source or destination of a connection.
+      An Endpoint can be specified at various levels of abstraction, and
+      an Endpoint at a higher level of abstraction (such as a hostname)
+      can be resolved to more concrete identities (such as IP
+      addresses).
 
+   *  Remote Endpoint: The Remote Endpoint represents the application's
+      identifier for a peer that can participate in a transport
+      connection; for example, the combination of a DNS name for the
+      peer and a service name/port.
 
+   *  Local Endpoint: The Local Endpoint represents the application's
+      identifier for itself that it uses for transport connections; for
+      example, a local IP address and port.
 
-
-
-
-
-
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 14]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
-        Pre-Establishment     :       Established             : Termination
-        -----------------     :       -----------             : -----------
-                              :                               :
-    +-- Local Endpoint        :           Message             :
-    +-- Remote Endpoint       :    Receive() |                :
-    +-- Transport Properties  :       Send() |                :
-    +-- Security Parameters   :              |                :
-    |                         :              |                :
-    |               InitiateWithSend()       |        Close() :
-    |   +---------------+   Initiate() +-----+------+ Abort() :
-    +---+ Preconnection |------------->| Connection |-----------> Closed
-        +---------------+ Rendezvous() +------------+         :
-       Listen() |             :           |     |             :
-                |             :           |     v             :
-                v             :           | Connection        :
-        +----------+          :           |   Ready           :
-        | Listener |----------------------+                   :
-        +----------+  Connection Received                     :
-                              :                               :
-
-               Figure 4: The lifetime of a Connection object
-
-4.1.1.  Connections and Related Objects
+4.1.2.  Connections and Related Objects
 
    *  Preconnection: A Preconnection object is a representation of a
       potential Connection.  It has state that describes parameters of a
       Connection that might exist in the future: the Local Endpoint from
       which that Connection will be established, the Remote Endpoint
-      (Section 4.1.2) to which it will connect, and Transport Properties
+      (Section 4.1.3) to which it will connect, and Transport Properties
       that influence the paths and protocols a Connection will use.  A
       Preconnection can be fully specified such that it represents a
       single possible Connection, or it can be partially specified such
       that it represents a family of possible Connections.  The Local
-      Endpoint (Section 4.1.2) is required if the Preconnection is used
+      Endpoint (Section 4.1.3) is required if the Preconnection is used
       to Listen for incoming Connections.  The Local Endpoint is
       optional if it is used to Initiate Connections.  The Remote
       Endpoint is required in the Preconnection that is used to Initiate
@@ -833,22 +704,13 @@ Internet-Draft              TAPS Architecture                  July 2020
       configure the Transport Services system.  There are three kinds of
       Transport Properties:
 
-
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 15]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
-      -  Selection Properties (Section 4.1.2) that can only be specified
+      -  Selection Properties (Section 4.1.3) that can only be specified
          on a Preconnection.
 
-      -  Connection Properties (Section 4.1.2) that can be specified on
+      -  Connection Properties (Section 4.1.3) that can be specified on
          a Preconnection and changed on the Connection.
 
-      -  Message Properties (Section 4.1.4) that can be specified as
+      -  Message Properties (Section 4.1.5) that can be specified as
          defaults on a Preconnection or a Connection, and can also be
          specified during data transfer to affect specific Messages.
 
@@ -869,48 +731,21 @@ Internet-Draft              TAPS Architecture                  July 2020
       Connection objects.  It is created from a Preconnection object
       that specifies the type of incoming Connections it will accept.
 
-4.1.2.  Pre-Establishment
-
-   *  Endpoint: An Endpoint represents an identifier for one side of a
-      transport connection.  Endpoints can be Local Endpoints or Remote
-      Endpoints, and respectively represent an identity that the
-      application uses for the source or destination of a connection.
-      An Endpoint can be specified at various levels of abstraction, and
-      an Endpoint at a higher level of abstraction (such as a hostname)
-      can be resolved to more concrete identities (such as IP
-      addresses).
-
-   *  Remote Endpoint: The Remote Endpoint represents the application's
-      identifier for a peer that can participate in a transport
-      connection; for example, the combination of a DNS name for the
-      peer and a service name/port.
-
-   *  Local Endpoint: The Local Endpoint represents the application's
-      identifier for itself that it uses for transport connections; for
-      example, a local IP address and port.
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 16]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
+4.1.3.  Pre-Establishment
 
    *  Selection Properties: The Selection Properties consist of the
-      options that an application can set to influence the selection of
-      paths between the local and remote systems, to influence the
+      properties that an application can set to influence the selection
+      of paths between the local and remote systems, to influence the
       selection of transport protocols, or to configure the behavior of
-      generic transport protocol features.  These options can take the
-      form of requirements, prohibitions, or preferences.  Examples of
-      options that influence path selection include the interface type
-      (such as a Wi-Fi connection, or a Cellular LTE connection),
+      generic transport protocol features.  These properties can take
+      the form of requirements, prohibitions, or preferences.  Examples
+      of properties that influence path selection include the interface
+      type (such as a Wi-Fi connection, or a Cellular LTE connection),
       requirements around the largest Message that can be sent, or
-      preferences for throughput and latency properties.  Examples of
-      options that influence protocol selection and configuration of
-      transport protocol features include reliability, multipath
-      support, and fast open support.
+      preferences for throughput and latency.  Examples of properties
+      that influence protocol selection and configuration of transport
+      protocol features include reliability, multipath support, and fast
+      open support.
 
    *  Connection Properties: The Connection Properties are used to
       configure protocol-specific options and control per-connection
@@ -920,39 +755,23 @@ Internet-Draft              TAPS Architecture                  July 2020
       Note that the presence of such a property does not require that a
       specific protocol will be used.  In general, these properties do
       not explicitly determine the selection of paths or protocols, but
-      can be used in this way by an implementation during connection
-      establishment.  Connection Properties are specified on a
-      Preconnection prior to Connection establishment, and can be
-      modified on the Connection later.  Changes made to Connection
-      Properties after Connection establishment take effect on a best-
-      effort basis.
+      can be used by an implementation during connection establishment.
+      Connection Properties are specified on a Preconnection prior to
+      Connection establishment, and can be modified on the Connection
+      later.  Changes made to Connection Properties after Connection
+      establishment take effect on a best-effort basis.
 
    *  Security Parameters: Security Parameters define an application's
       requirements for authentication and encryption on a Connection.
       They are used by Transport Security protocols (such as those
-      described in [I-D.ietf-taps-transport-security]) to establish
-      secure Connections.  Examples of parameters that can be set
-      include local identities, private keys, supported cryptographic
-      algorithms, and requirements for validating trust of remote
-      identities.  Security Parameters are primarily associated with a
-      Preconnection object, but properties related to identities can be
-      associated directly with Endpoints.
+      described in [RFC8922]) to establish secure Connections.  Examples
+      of parameters that can be set include local identities, private
+      keys, supported cryptographic algorithms, and requirements for
+      validating trust of remote identities.  Security Parameters are
+      primarily associated with a Preconnection object, but properties
+      related to identities can be associated directly with Endpoints.
 
-4.1.3.  Establishment Actions
-
-
-
-
-
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 17]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
+4.1.4.  Establishment Actions
 
    *  Initiate: The primary action that an application can take to
       create a Connection to a Remote Endpoint, and prepare any required
@@ -965,7 +784,7 @@ Internet-Draft              TAPS Architecture                  July 2020
 
    *  Listen: Enables a listener to accept incoming Connections.  The
       Listener will then create Connection objects as incoming
-      connections are accepted (Section 4.1.5).  Listeners by default
+      connections are accepted (Section 4.1.6).  Listeners by default
       register with multiple paths, protocols, and local endpoints,
       unless constrained by Selection Properties and/or the specified
       Local Endpoint(s).  Connections can be accepted on any of the
@@ -990,7 +809,7 @@ Internet-Draft              TAPS Architecture                  July 2020
       candidates in the style of the ICE algorithm [RFC8445] to perform
       NAT binding discovery and initiate a peer-to-peer connection.
 
-4.1.4.  Data Transfer Objects and Actions
+4.1.5.  Data Transfer Objects and Actions
 
    *  Message: A Message object is a unit of data that can be
       represented as bytes that can be transferred between two systems
@@ -1002,14 +821,6 @@ Internet-Draft              TAPS Architecture                  July 2020
    *  Message Properties: Message Properties are used to specify details
       about Message transmission.  They can be specified directly on
       individual Messages, or can be set on a Preconnection or
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 18]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
       Connection as defaults.  These properties might only apply to how
       a Message is sent (such as how the transport will treat
       prioritization and reliability), but can also include properties
@@ -1025,12 +836,12 @@ Internet-Draft              TAPS Architecture                  July 2020
       remote system.  The interface to Send can accept Message
       Properties specific to how the Message content is to be sent.  The
       status of the Send operation is delivered back to the sending
-      application in an event (Section 4.1.5).
+      application in an event (Section 4.1.6).
 
    *  Receive: An action that indicates that the application is ready to
       asynchronously accept a Message over a Connection from a remote
       system, while the Message content itself will be delivered in an
-      event (Section 4.1.5).  The interface to Receive can include
+      event (Section 4.1.6).  The interface to Receive can include
       Message Properties specific to the Message that is to be delivered
       to the application.
 
@@ -1040,7 +851,7 @@ Internet-Draft              TAPS Architecture                  July 2020
       relevant for protocols that otherwise present unstructured
       streams, such as TCP.
 
-4.1.5.  Event Handling
+4.1.6.  Event Handling
 
    The following categories of events can be delivered to an
    application:
@@ -1058,14 +869,6 @@ Internet-Draft              TAPS Architecture                  July 2020
    *  Connection Received: Signals to an application that a given
       Listener has received a Connection.
 
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 19]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
    *  Message Received: Delivers received Message content to the
       application, based on a Receive action.  This can include an error
       if the Receive action cannot be satisfied due to the Connection
@@ -1080,7 +883,7 @@ Internet-Draft              TAPS Architecture                  July 2020
       property of the Connection has changed that might influence how
       and where data is sent and/or received.
 
-4.1.6.  Termination Actions
+4.1.7.  Termination Actions
 
    *  Close: The action an application takes on a Connection to indicate
       that it no longer intends to send data, is no longer willing to
@@ -1098,7 +901,7 @@ Internet-Draft              TAPS Architecture                  July 2020
       is intended for immediate termination of a connection, without
       cleaning up state.
 
-4.1.7.  Connection Groups
+4.1.8.  Connection Groups
 
    A Connection Group is a set of Connections that share properties and
    caches.  For multiplexing transport protocols, only Connections
@@ -1112,15 +915,6 @@ Internet-Draft              TAPS Architecture                  July 2020
    or library to implement the functionality needed to provide a
    transport service across a network, as required by the abstract
    interface.
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 20]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
 
    *  Path: Represents an available set of properties that a local
       system can use to communicate with a remote system, such as
@@ -1166,17 +960,6 @@ Internet-Draft              TAPS Architecture                  July 2020
       paths, as well as other information.
 
 4.2.1.  Candidate Gathering
-
-
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 21]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
 
    *  Candidate Path Selection: Candidate Path Selection represents the
       act of choosing one or more paths that are available to use based
@@ -1227,13 +1010,6 @@ Internet-Draft              TAPS Architecture                  July 2020
    There are several reasons, however, that an application might want to
    explicitly isolate some Connections.  These reasons include:
 
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 22]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
    *  Privacy concerns about re-using cached protocol state that can
       lead to linkability.  Sensitive state may include TLS session
       state [RFC8446] and HTTP cookies [RFC6265].
@@ -1274,21 +1050,13 @@ Internet-Draft              TAPS Architecture                  July 2020
    protocol-specific interface provided by supported security protocols.
    For example, trust verification callbacks are common parts of TLS
    APIs.  Transport Services APIs will expose similar functionality
-   [I-D.ietf-taps-transport-security].
+   [RFC8922].
 
    As described above in Section 3.3, if a Transport Services system
    races between two different Protocol Stacks, both need to use the
    same security protocols and options.  However, a Transport Services
    system can race different security protocols, e.g., if the
    application explicitly specifies that it considers them equivalent.
-
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 23]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
 
    Applications need to ensure that they use security APIs
    appropriately.  In cases where applications use an interface to
@@ -1338,18 +1106,10 @@ Internet-Draft              TAPS Architecture                  July 2020
               Trammell, B., Welzl, M., Enghardt, T., Fairhurst, G.,
               Kuehlewind, M., Perkins, C., Tiesel, P., Wood, C., and T.
               Pauly, "An Abstract Application Layer Interface to
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 24]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
               Transport Services", Work in Progress, Internet-Draft,
-              draft-ietf-taps-interface-07, 13 July 2020,
+              draft-ietf-taps-interface-10, 2 November 2020,
               <http://www.ietf.org/internet-drafts/draft-ietf-taps-
-              interface-07.txt>.
+              interface-10.txt>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1366,24 +1126,9 @@ Internet-Draft              TAPS Architecture                  July 2020
               Brunstrom, A., Pauly, T., Enghardt, T., Grinnemo, K.,
               Jones, T., Tiesel, P., Perkins, C., and M. Welzl,
               "Implementing Interfaces to Transport Services", Work in
-              Progress, Internet-Draft, draft-ietf-taps-impl-07, 13 July
-              2020, <http://www.ietf.org/internet-drafts/draft-ietf-
-              taps-impl-07.txt>.
-
-   [I-D.ietf-taps-minset]
-              Welzl, M. and S. Gjessing, "A Minimal Set of Transport
-              Services for End Systems", Work in Progress, Internet-
-              Draft, draft-ietf-taps-minset-11, 27 September 2018,
-              <http://www.ietf.org/internet-drafts/draft-ietf-taps-
-              minset-11.txt>.
-
-   [I-D.ietf-taps-transport-security]
-              Enghardt, T., Pauly, T., Perkins, C., Rose, K., and C.
-              Wood, "A Survey of the Interaction Between Security
-              Protocols and Transport Services", Work in Progress,
-              Internet-Draft, draft-ietf-taps-transport-security-12, 23
-              April 2020, <http://www.ietf.org/internet-drafts/draft-
-              ietf-taps-transport-security-12.txt>.
+              Progress, Internet-Draft, draft-ietf-taps-impl-08, 2
+              November 2020, <http://www.ietf.org/internet-drafts/draft-
+              ietf-taps-impl-08.txt>.
 
    [POSIX]    "IEEE Std. 1003.1-2008 Standard for Information Technology
               -- Portable Operating System Interface (POSIX).  Open
@@ -1393,14 +1138,6 @@ Internet-Draft              TAPS Architecture                  July 2020
    [RFC0793]  Postel, J., "Transmission Control Protocol", STD 7,
               RFC 793, DOI 10.17487/RFC0793, September 1981,
               <https://www.rfc-editor.org/info/rfc793>.
-
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 25]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
 
    [RFC4303]  Kent, S., "IP Encapsulating Security Payload (ESP)",
               RFC 4303, DOI 10.17487/RFC4303, December 2005,
@@ -1441,6 +1178,16 @@ Internet-Draft              TAPS Architecture                  July 2020
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
 
+   [RFC8922]  Enghardt, T., Pauly, T., Perkins, C., Rose, K., and C.
+              Wood, "A Survey of the Interaction between Security
+              Protocols and Transport Services", RFC 8922,
+              DOI 10.17487/RFC8922, October 2020,
+              <https://www.rfc-editor.org/info/rfc8922>.
+
+   [RFC8923]  Welzl, M. and S. Gjessing, "A Minimal Set of Transport
+              Services for End Systems", RFC 8923, DOI 10.17487/RFC8923,
+              October 2020, <https://www.rfc-editor.org/info/rfc8923>.
+
 Authors' Addresses
 
    Tommy Pauly (editor)
@@ -1450,12 +1197,6 @@ Authors' Addresses
    United States of America
 
    Email: tpauly@apple.com
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 26]
-
-Internet-Draft              TAPS Architecture                  July 2020
 
 
    Brian Trammell (editor)
@@ -1506,63 +1247,7 @@ Internet-Draft              TAPS Architecture                  July 2020
    Christopher A. Wood
    Cloudflare
    101 Townsend St
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 27]
-
-Internet-Draft              TAPS Architecture                  July 2020
-
-
    San Francisco,
    United States of America
 
    Email: caw@heapingbits.net
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Pauly, et al.            Expires 28 January 2021               [Page 28]
